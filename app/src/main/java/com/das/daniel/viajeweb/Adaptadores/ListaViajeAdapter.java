@@ -48,22 +48,10 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
     Activity mActivity;
 
 
-    private Button _btnGuardarReserva, _btnCancelarReserva;
 
-    @NotEmpty(message = "Ingrese su nombre")
-    @Pattern(regex ="[a-z A-Z Ñ ñ Á-Ú á-ú Ü ü]{3,50}",message = "Ingrese sólo letras, rango: 3-50")
-    private EditText _etNombre;
-
-    @NotEmpty(message = "Ingrese su apellido")
-    @Pattern(regex ="[a-z A-Z Ñ ñ Á-Ú á-ú Ü ü]{3,50}",message = "Ingrese sólo letras, rango: 3-50")
-    private EditText _etApellido;
-
-    @NotEmpty(message = "Ingrese su Ci")
-    @Pattern(regex ="[0123456789]{5,8}",message = "Ingrese sólo números, rango 5-9")
-    private EditText _etCi;
 
     Validator validator;
-    private String pCodigo, pDestino, pHorario, pPrecio;
+
 
     public ListaViajeAdapter(Context context, List<Viaje> viajesList, Activity mActivity) {
 
@@ -85,15 +73,11 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 
         final Viaje viajes = viajesList.get(position);
         //Pass the values of feeds object to Views
-        holder._tvCodigo.setText("Código: "+viajes.getCodigo());
-        holder._tvDestino.setText("Destino: "+viajes.getDestino());
-        holder._tvHorario.setText("Horario: "+viajes.getHorario());
-        holder._tvPrecio.setText("Precio: "+viajes.getPrecio()+"");
-        holder._tvFlota.setText("Flota: "+viajes.getFlota());
+     //   holder._tvCodigo.setText("Código: "+viajes.getCodigo());
 
 
 
-        Glide.with(context).load(viajes.getImagen()).into(holder._imgFoto);
+
 
 
         holder.setItemClickListener(new ItemClickListener() {
@@ -101,7 +85,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
             public void onItemClick(View v, int pos) {
                 //OPEN DETAIL ACTIVITY
                 //PASS DATA
-                mostrarDialogo(viajes.getCodigo(),viajes.getDestino(), viajes.getHorario(), viajes.getPrecio()+"");
+
 
 
             }
@@ -114,74 +98,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         return viajesList.size();
     }
 
-    @Override
-    public void onValidationSucceeded() {
 
-        String URL   = "http://192.168.1.4:81/viajes/insertarReserva.php";
-
-        Log.i("url",URL);
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest stringRequest  = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>()
-        {
-            @Override
-            public void onResponse(String response) {
-                // response
-                Log.d("Response", response);
-            }
-        },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        //                Log.i("errorrespuesta",error.getMessage());
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("id", "");
-                params.put("Nombre", _etNombre.getText()+"");
-                params.put("Apellido", _etApellido.getText()+"");
-                params.put("Ci",_etCi.getText()+"");
-                params.put("FkViaje", pCodigo);
-
-
-                return params;
-            }
-        };
-
-        queue.add(stringRequest);
-
-
-        Toast.makeText(context, "Reserva guardada correctamente",Toast.LENGTH_LONG).show();
-
-
-
-        Intent intent=new Intent(context, ReporteActivity.class);
-        intent.putExtra("NOMBRE",_etNombre.getText()+"");
-        intent.putExtra("APELLIDO",_etApellido.getText()+"");
-        intent.putExtra("CI",_etCi.getText()+"");
-        intent.putExtra("DESTINO",pDestino);
-        intent.putExtra("HORARIO",pHorario);
-        intent.putExtra("PRECIO",pPrecio);
-
-        context.startActivity(intent);
-    }
-
-    @Override
-    public void onValidationFailed(List<ValidationError> errors) {
-        for(ValidationError error : errors){
-            View view = error.getView();
-            String message = error.getCollatedErrorMessage(context);
-
-            if (view instanceof EditText){
-                ((EditText) view).setError(message);
-            }
-        }
-    }
 
     private void mostrarDialogo(String codigo, String destino, String horario, String precio)
     {
@@ -189,39 +106,13 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         validator.setValidationListener(this);
         final Dialog d = new Dialog(context);
         d.setContentView(R.layout.nueva_reserva);
-        _etNombre= (EditText) d.findViewById(R.id.etNombre);
-        _etApellido= (EditText) d.findViewById(R.id.etApellido);
-        _etCi= (EditText) d.findViewById(R.id.etCi);
 
-
-        _btnGuardarReserva= (Button) d.findViewById(R.id.btnInsertarReserva);
-        _btnCancelarReserva= (Button) d.findViewById(R.id.btnCancelarReserva);
-
-        pCodigo=codigo;
-        pDestino=destino;
-        pHorario=horario;
-        pPrecio=precio;
-
-        _btnGuardarReserva.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                validator.validate();
-            }
-        });
-        _btnCancelarReserva.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.hide();
-            }
-        });
         d.show();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView _tvCodigo, _tvDestino, _tvHorario, _tvPrecio, _tvFlota;
-        private ImageView _imgFoto;
+        private TextView _tvCodigo
 
 
         ItemClickListener itemClickListener;
@@ -229,14 +120,8 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            _tvCodigo = (TextView) itemView.findViewById(R.id.tvCodigo);
-            _tvDestino = (TextView) itemView.findViewById(R.id.tvDestino);
-            _tvHorario = (TextView) itemView.findViewById(R.id.tvHorario);
-            _tvPrecio = (TextView) itemView.findViewById(R.id.tvPrecio);
-            _tvFlota = (TextView) itemView.findViewById(R.id.tvFlota);
+           // _tvCodigo = (TextView) itemView.findViewById(R.id.tvCodigo);
 
-            // Volley's NetworkImageView which will load Image from URL
-            _imgFoto = (ImageView) itemView.findViewById(R.id.imgFoto);
             itemView.setOnClickListener(this);
 
 

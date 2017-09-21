@@ -25,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RequestQueue queue;
-    String url = "http://192.168.1.4:81/viajes/viajeListado.php";
+    String url ;
     RecyclerView recyclerView;
     List<Viaje> viajesList = new ArrayList<Viaje>();
     ListaViajeAdapter adapter;
@@ -48,37 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void cargarRecycler()
     {
-        JsonArrayRequest newsReq = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                for ( int i= 0; i < response.length(); i++) {
-                    try {
 
-                        JSONObject obj = response.getJSONObject(i);
-                        Viaje viajes = new Viaje(obj.getString("Codigo"), obj.getString("Destino"),
-                                obj.getString("Horario"), obj.getDouble("Precio"),obj.getString("Flota"), obj.getString("Imagen"));
-
-                        // añadiendo noticia a array
-                        viajesList.add(viajes);
-
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    } finally {
-                        //Notifica al adaptador sobre el cambio
-                        adapter.notifyItemChanged(i);
-                    }
-
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println(error.getMessage());
-                Toast.makeText(MainActivity.this, "Verifique el acceso a internet", Toast.LENGTH_LONG).show();
-            }
-        });
-        //Añadiendo JsonArrayRequest a Request Queue
-        queue.add(newsReq);
     }
 }
