@@ -100,7 +100,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 
 
 
-    private void mostrarDialogo(String codigo, String destino, String horario, String precio)
+    private void mostrarDialogo()
     {
         validator = new Validator(this);
         validator.setValidationListener(this);
