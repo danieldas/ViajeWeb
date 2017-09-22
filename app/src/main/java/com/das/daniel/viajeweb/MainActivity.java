@@ -25,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RequestQueue queue;
-    String url = "http://172.16.161.102:81/viajes/viajeListado.php";
+    String url = "http://172.16.161.100:81/viajes/viajeListado.php";
     RecyclerView recyclerView;
     List<Viaje> viajesList = new ArrayList<Viaje>();
     ListaViajeAdapter adapter;
@@ -55,15 +55,20 @@ public class MainActivity extends AppCompatActivity {
                 for (int i= 0; i < response.length(); i++)
                 {
                     try {
-                        JSONObject object = new JSONObject();
+                        JSONObject object = response.getJSONObject(i);
                         Viaje viaje = new Viaje(object.getString("Codigo"),
                                 object.getString("Destino"), object.getString("Horario"),
                                 object.getString("Precio"), object.getString("Flota"),
                                 object.getString("Imagen"));
+
                         viajesList.add(viaje);
                     }
                     catch (Exception ex) {
                         System.out.print(ex.getMessage());
+                    }
+                    finally {
+                        //Notifica al adaptador sobre el cambio
+                        adapter.notifyItemChanged(i);
                     }
                 }
             }

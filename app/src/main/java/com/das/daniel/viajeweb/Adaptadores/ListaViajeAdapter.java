@@ -62,6 +62,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
     Validator validator;
 
 
+
     public ListaViajeAdapter(Context context, List<Viaje> viajesList, Activity mActivity) {
 
         this.context = context;
@@ -87,7 +88,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         holder._tvHorario.setText("Horario: "+viajes.getHorario());
         holder._tvPrecio.setText("Precio: "+viajes.getPrecio());
         holder._tvFlota.setText("Flota: "+viajes.getFlota());
-
+        Glide.with(context).load(viajes.getImagen()).into(holder._imgFoto);
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
@@ -138,8 +139,9 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 
     @Override
     public void onValidationSucceeded() {
+
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="http://172.16.161.102:81/viajes/insertarReservar.php";
+        String url ="http://172.16.161.100:81/viajes/insertarReserva.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -151,7 +153,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-              Toast.makeText(context,"No se pudo realizar la accion", Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"No se pudo realizar la accion", Toast.LENGTH_LONG).show();
             }
         })
         {
@@ -163,13 +165,15 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
                 params.put("Nombre", _etNombre.getText()+"");
                 params.put("Apellido", _etApellido.getText()+"");
                 params.put("Ci", _etCi.getText()+"");
-                params.put("FkViaje", "");
+                params.put("FkViaje", "V1");
 
                 return params;
             }
         };
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
+        Toast.makeText(context, "Reservar guardada correctamente", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -180,8 +184,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView _tvCodigo, _tvDestino, _tvHorario, _tvPrecio, _tvFlota;
-
-
+        private ImageView _imgFoto;
         ItemClickListener itemClickListener;
 
         public MyViewHolder(View itemView) {
@@ -192,6 +195,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
             _tvHorario = (TextView) itemView.findViewById(R.id.tvHorario);
             _tvPrecio = (TextView) itemView.findViewById(R.id.tvPrecio);
             _tvFlota = (TextView) itemView.findViewById(R.id.tvFlota);
+            _imgFoto= (ImageView) itemView.findViewById(R.id.imgFoto);
 
             itemView.setOnClickListener(this);
 
