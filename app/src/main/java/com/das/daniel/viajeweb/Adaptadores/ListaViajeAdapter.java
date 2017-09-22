@@ -25,8 +25,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.das.daniel.viajeweb.ItemClickListener;
+import com.das.daniel.viajeweb.MainActivity;
 import com.das.daniel.viajeweb.Modelo.Viaje;
 import com.das.daniel.viajeweb.R;
+import com.das.daniel.viajeweb.ReciboActivity;
 import com.das.daniel.viajeweb.ReporteActivity;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -58,6 +60,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 
 
     private Button _btnInsertarReserva, _btnCancelarReserva;
+    private String _codigo, _destino, _horario, _precio;
 
     Validator validator;
 
@@ -95,7 +98,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
             public void onItemClick(View v, int pos) {
                 //OPEN DETAIL ACTIVITY
                 //PASS DATA
-                mostrarDialogo();
+                mostrarDialogo(viajes.getCodigo(), viajes.getDestino(), viajes.getHorario(),viajes.getPrecio());
 
             }
         });
@@ -109,12 +112,17 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 
 
 
-    private void mostrarDialogo()
+    private void mostrarDialogo(String codigo, String destino, String horario, String precio)
     {
         validator = new Validator(this);
         validator.setValidationListener(this);
         final Dialog d = new Dialog(context);
         d.setContentView(R.layout.nueva_reserva);
+
+        _codigo=codigo;
+        _destino=destino;
+        _horario=horario;
+        _precio=precio;
 
         _etNombre= (EditText) d.findViewById(R.id.etNombre);
         _etApellido= (EditText) d.findViewById(R.id.etApellido);
@@ -165,7 +173,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
                 params.put("Nombre", _etNombre.getText()+"");
                 params.put("Apellido", _etApellido.getText()+"");
                 params.put("Ci", _etCi.getText()+"");
-                params.put("FkViaje", "V1");
+                params.put("FkViaje", _codigo);
 
                 return params;
             }
@@ -173,12 +181,31 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
+        Intent intent=new Intent(mActivity, ReciboActivity.class);
+        intent.putExtra("Nombre", _etNombre.getText());
+        intent.putExtra("Apellido", _etApellido.getText());
+        intent.putExtra("Ci", _etCi.getText());
+        intent.putExtra("Destino", _destino);
+        intent.putExtra("Horario", _horario);
+        intent.putExtra("Precio", _precio);
+
+        mActivity.startActivity(intent);
         Toast.makeText(context, "Reservar guardada correctamente", Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(context);
 
+            // Display error messages ;)
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
