@@ -47,8 +47,17 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
     private LayoutInflater inflater;
     Activity mActivity;
 
+    @NotEmpty
+    private EditText _etNombre;
+
+    @NotEmpty
+    private EditText _etCi;
+
+    @NotEmpty
+    private EditText _etApellido;
 
 
+    private Button _btnInsertarReserva, _btnCancelarReserva;
 
     Validator validator;
 
@@ -73,7 +82,11 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 
         final Viaje viajes = viajesList.get(position);
         //Pass the values of feeds object to Views
-     //   holder._tvCodigo.setText("Código: "+viajes.getCodigo());
+        holder._tvCodigo.setText("Código: "+viajes.getCodigo());
+        holder._tvDestino.setText("Destino: "+viajes.getDestino());
+        holder._tvHorario.setText("Horario: "+viajes.getHorario());
+        holder._tvPrecio.setText("Precio: "+viajes.getPrecio());
+        holder._tvFlota.setText("Flota: "+viajes.getFlota());
 
 
 
@@ -110,9 +123,19 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         d.show();
     }
 
+    @Override
+    public void onValidationSucceeded() {
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView _tvCodigo
+        private TextView _tvCodigo, _tvDestino, _tvHorario, _tvPrecio, _tvFlota;
 
 
         ItemClickListener itemClickListener;
@@ -120,7 +143,11 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         public MyViewHolder(View itemView) {
             super(itemView);
 
-           // _tvCodigo = (TextView) itemView.findViewById(R.id.tvCodigo);
+            _tvCodigo = (TextView) itemView.findViewById(R.id.tvCodigo);
+            _tvDestino = (TextView) itemView.findViewById(R.id.tvDestino);
+            _tvHorario = (TextView) itemView.findViewById(R.id.tvHorario);
+            _tvPrecio = (TextView) itemView.findViewById(R.id.tvPrecio);
+            _tvFlota = (TextView) itemView.findViewById(R.id.tvFlota);
 
             itemView.setOnClickListener(this);
 
