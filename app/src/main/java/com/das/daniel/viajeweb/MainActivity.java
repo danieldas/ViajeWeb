@@ -25,10 +25,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RequestQueue queue;
-    String url ;
+    String url = "http://172.16.161.102:81/viajes/viajeListado.php";
     RecyclerView recyclerView;
     List<Viaje> viajesList = new ArrayList<Viaje>();
     ListaViajeAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +49,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void cargarRecycler()
     {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i= 0; i < response.length(); i++)
+                {
+                    try {
+                        JSONObject object = new JSONObject();
+                        Viaje viaje = new Viaje(object.getString("Codigo"),
+                                object.getString("Destino"), object.getString("Horario"),
+                                object.getString("Precio"), object.getString("Flota"),
+                                object.getString("Imagen"));
+                        viajesList.add(viaje);
+                    }
+                    catch (Exception ex) {
+                        System.out.print(ex.getMessage());
+                    }
+                }
+            }
+        }, new Response.ErrorListener(){
 
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.print(error.getMessage());
+                Toast.makeText(MainActivity.this, "Verifique la salida a internet", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        queue.add(jsonArrayRequest);
     }
 }

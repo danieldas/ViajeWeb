@@ -140,6 +140,36 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
     public void onValidationSucceeded() {
         RequestQueue queue = Volley.newRequestQueue(context);
         String url ="http://172.16.161.102:81/viajes/insertarReservar.php";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+              Toast.makeText(context,"No se pudo realizar la accion", Toast.LENGTH_LONG).show();
+            }
+        })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String > params=new HashMap<String, String>();
+                params.put("id", "");
+                params.put("Nombre", _etNombre.getText()+"");
+                params.put("Apellido", _etApellido.getText()+"");
+                params.put("Ci", _etCi.getText()+"");
+                params.put("FkViaje", "");
+
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     @Override
