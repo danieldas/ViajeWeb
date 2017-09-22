@@ -89,17 +89,12 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         holder._tvFlota.setText("Flota: "+viajes.getFlota());
 
 
-
-
-
-
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
                 //OPEN DETAIL ACTIVITY
                 //PASS DATA
-
-
+                mostrarDialogo();
 
             }
         });
@@ -120,12 +115,31 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         final Dialog d = new Dialog(context);
         d.setContentView(R.layout.nueva_reserva);
 
+        _etNombre= (EditText) d.findViewById(R.id.etNombre);
+        _etApellido= (EditText) d.findViewById(R.id.etApellido);
+        _etCi= (EditText) d.findViewById(R.id.etCi);
+        _btnInsertarReserva= (Button) d.findViewById(R.id.btnInsertarReserva);
+        _btnCancelarReserva= (Button) d.findViewById(R.id.btnCancelarReserva);
+
+        _btnInsertarReserva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validator.validate();
+            }
+        });
+        _btnCancelarReserva.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                d.hide();
+            }
+        });
         d.show();
     }
 
     @Override
     public void onValidationSucceeded() {
-
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String url ="http://172.16.161.102:81/viajes/insertarReservar.php";
     }
 
     @Override
