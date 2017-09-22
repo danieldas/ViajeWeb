@@ -1,5 +1,6 @@
 package com.das.daniel.viajeweb;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -12,6 +13,17 @@ public class ReciboActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recibo);
 
+
+
+        Intent intent=getIntent();
+        String pDestino=intent.getExtras().getString("Destino");
+        String pHorario=intent.getExtras().getString("Horario");
+        String pPrecio=intent.getExtras().getString("Precio");
+        String pNombre=intent.getExtras().getString("Nombre");
+        String pApellido=intent.getExtras().getString("Apellido");
+        String pCi=intent.getExtras().getString("Ci");
+
+
         _tvDestino= (TextView) findViewById(R.id.tvReDestino);
         _tvHorario= (TextView) findViewById(R.id.tvReHorario);
         _tvPrecio= (TextView) findViewById(R.id.tvRePrecio);
@@ -19,18 +31,11 @@ public class ReciboActivity extends AppCompatActivity {
         _tvApellido= (TextView) findViewById(R.id.tvReApellido);
         _tvCi= (TextView) findViewById(R.id.tvReCi);
 
-        Bundle bundle=getIntent().getExtras();
-        String pDestino=bundle.getString("Destino");
-        _tvDestino.setText(pDestino);
-        String pHorario=bundle.getString("Horario");
-        _tvDestino.setText(pHorario);
-        String pPrecio=bundle.getString("Precio");
-        _tvDestino.setText(pPrecio);
-        String pNombre=bundle.getString("Nombre");
-        _tvDestino.setText(pNombre);
-        String pApellido=bundle.getString("Apellido");
-        _tvDestino.setText(pApellido);
-        String pCi=bundle.getString("Ci");
-        _tvDestino.setText(pCi);
+        _tvCi.setText("Ci: "+pCi);
+        _tvHorario.setText("Horario : "+pHorario);
+        _tvApellido.setText("Apellido: "+pApellido);
+        _tvNombre.setText("Nombre: "+pNombre);
+        _tvPrecio.setText("Precio: "+pPrecio);
+        _tvDestino.setText("Destino: "+pDestino);
     }
 }

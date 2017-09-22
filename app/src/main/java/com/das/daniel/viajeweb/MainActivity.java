@@ -25,7 +25,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RequestQueue queue;
-    String url = "http://172.16.161.100:81/viajes/viajeListado.php";
+    String url = "http://192.168.43.11:81/viajes/viajeListado.php";
     RecyclerView recyclerView;
     List<Viaje> viajesList = new ArrayList<Viaje>();
     ListaViajeAdapter adapter;

@@ -149,7 +149,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
     public void onValidationSucceeded() {
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url ="http://172.16.161.100:81/viajes/insertarReserva.php";
+        String url ="http://192.168.43.11:81/viajes/insertarReserva.php";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -181,7 +181,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
-        Intent intent=new Intent(mActivity, ReciboActivity.class);
+        Intent intent=new Intent(context, ReciboActivity.class);
         intent.putExtra("Nombre", _etNombre.getText());
         intent.putExtra("Apellido", _etApellido.getText());
         intent.putExtra("Ci", _etCi.getText());
@@ -189,7 +189,7 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         intent.putExtra("Horario", _horario);
         intent.putExtra("Precio", _precio);
 
-        mActivity.startActivity(intent);
+        context.startActivity(intent);
         Toast.makeText(context, "Reservar guardada correctamente", Toast.LENGTH_LONG).show();
     }
 
