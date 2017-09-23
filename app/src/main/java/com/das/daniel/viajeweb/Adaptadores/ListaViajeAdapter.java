@@ -182,9 +182,9 @@ public class ListaViajeAdapter extends RecyclerView.Adapter<ListaViajeAdapter.My
         queue.add(stringRequest);
 
         Intent intent=new Intent(context, ReciboActivity.class);
-        intent.putExtra("Nombre", _etNombre.getText());
-        intent.putExtra("Apellido", _etApellido.getText());
-        intent.putExtra("Ci", _etCi.getText());
+        intent.putExtra("Nombre", _etNombre.getText()+"");
+        intent.putExtra("Apellido", _etApellido.getText()+"");
+        intent.putExtra("Ci", _etCi.getText()+"");
         intent.putExtra("Destino", _destino);
         intent.putExtra("Horario", _horario);
         intent.putExtra("Precio", _precio);
